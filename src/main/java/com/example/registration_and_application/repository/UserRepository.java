@@ -2,6 +2,7 @@ package com.example.registration_and_application.repository;
 
 import com.example.registration_and_application.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 

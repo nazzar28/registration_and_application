@@ -9,7 +9,7 @@ import lombok.Data;
 @Table(name = "users_table")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String email;
@@ -20,11 +20,14 @@ public class User {
     private Role role;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "applicant_id")
     private Applicant applicant;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "admin_id")
     private Admin admin;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "superadmin_id")
     private Superadmin superadmin;
 }

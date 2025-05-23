@@ -1,9 +1,18 @@
 package com.example.registration_and_application.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "applicants_table")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Applicant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,5 +23,6 @@ public class Applicant {
     private int age;
 
     @OneToOne(mappedBy = "applicant")
+    @JsonIgnore
     private User user;
 }
