@@ -3,9 +3,12 @@ package com.example.registration_and_application.service.serviceImpl;
 import com.example.registration_and_application.config.JwtService;
 import com.example.registration_and_application.dto.UserRegisterRequest;
 import com.example.registration_and_application.entity.User;
+import com.example.registration_and_application.enums.Role;
+import com.example.registration_and_application.exception.CustomException;
 import com.example.registration_and_application.repository.UserRepository;
 import com.example.registration_and_application.service.AuthService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,16 +33,16 @@ public class AuthServiceImpl implements AuthService {
     public void register(UserRegisterRequest userRegisterRequest) {
         String activationtoken = generateActivationToken();
 
-//        if (userRepository.findByEmail(userRegisterRequest.getEmail()).isPresent())
-//            throw new CustomException("User with email: " + userRegisterRequest.getEmail() + " is already exist!", HttpStatus.BAD_REQUEST);
+        if (userRepository.findByEmail(userRegisterRequest.getEmail()).isPresent())
+            throw new CustomException("User with email: " + userRegisterRequest.getEmail() + " is already exist!", HttpStatus.BAD_REQUEST);
 
         User user = new User();
 
-//        if(!userRegisterRequest.getEmail().contains("@gmail.com"))
-//            throw new CustomException("Email must have @gmail.com", HttpStatus.BAD_REQUEST);
-//        user.setEmail(userRegisterRequest.getEmail());
+        if(!userRegisterRequest.getEmail().contains("@gmail.com"))
+            throw new CustomException("Email must have @gmail.com", HttpStatus.BAD_REQUEST);
+        user.setEmail(userRegisterRequest.getEmail());
 
-//        user.setRole(Role.STUDENT);
+        user.setRole(Role.APPLICANT);
 
 //        if(userRegisterRequest.getPassword().isEmpty())
 //            throw new CustomException("Password cannot be empty", HttpStatus.BAD_REQUEST);

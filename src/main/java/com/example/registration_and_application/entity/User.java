@@ -18,6 +18,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+    private String activationtoken;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Applicant applicant;
