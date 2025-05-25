@@ -21,6 +21,7 @@ public class Applicant {
     private String name;
     private String phoneNumber;
     private int age;
+    private String email;
 
     @OneToOne(mappedBy = "applicant")
     @JsonIgnore
