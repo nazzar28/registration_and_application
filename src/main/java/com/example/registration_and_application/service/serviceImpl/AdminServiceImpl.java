@@ -13,11 +13,6 @@ public class AdminServiceImpl implements AdminService {
 
     private JavaMailSender mailSender;
 
-    public AdminServiceImpl(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
-
-
     @Override
     public void sendMail(String to, String subject, String content) {
         SimpleMailMessage message = new SimpleMailMessage();

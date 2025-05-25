@@ -13,10 +13,6 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
-    }
-
     @GetMapping("/send-test-email")
     public String sendTestEmail() {
         adminService.sendMail("nebogaolga09@gmail.com","Email Test","Hello user Dan");

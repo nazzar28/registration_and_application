@@ -1,11 +1,13 @@
 package com.example.registration_and_application.service.serviceImpl;
 
+import com.example.registration_and_application.dto.AdminRegistrationDto;
 import com.example.registration_and_application.entity.Admin;
 import com.example.registration_and_application.entity.User;
 import com.example.registration_and_application.enums.Role;
 import com.example.registration_and_application.exception.BadCredentialsException;
 import com.example.registration_and_application.exception.CustomException;
 import com.example.registration_and_application.repository.UserRepository;
+import com.example.registration_and_application.service.AuthService;
 import com.example.registration_and_application.service.SuperadminService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SuperAdminServiceImpl implements SuperadminService {
 
+    private final AuthService authService;
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final JavaMailSender mailSender;
@@ -31,26 +34,25 @@ public class SuperAdminServiceImpl implements SuperadminService {
     }
 
     @Override
-    public void admin_registration(String email, Role role) {
+    public void admin_registration(AdminRegistrationDto dto) {
+        if (!dto.getEmail().contains("@gmail.com")) {
+            throw new CustomException("Email must have @gmail.com", HttpStatus.BAD_REQUEST);
+        }
+
         Random random = new Random();
         String password = String.valueOf(random.nextInt(90000000) + 10000000);
         String activationtoken = generateActivationToken();
 
         User user = new User();
-
-        if(!email.contains("@gmail.com")) {
-            throw new CustomException("Email must have @gmail.com", HttpStatus.BAD_REQUEST);
-        }
-        user.setEmail(email);
-
+        user.setEmail(dto.getEmail());
         user.setPassword(encoder.encode(password));
-        user.setRole(Role.ADMIN);
+        user.setRole(dto.getRole());
         user.setActivationtoken(activationtoken);
 
-        Admin admin=new Admin();
-        admin.setName(user.getAdmin().getName());
-        admin.setAge(user.getAdmin().getAge());
-        admin.setPhoneNumber(user.getAdmin().getPhoneNumber());
+        Admin admin = new Admin();
+        admin.setName(dto.getName());
+        admin.setPhoneNumber(dto.getPhoneNumber());
+        admin.setAge(dto.getAge());
         admin.setUser(user);
 
         user.setAdmin(admin);
@@ -58,13 +60,12 @@ public class SuperAdminServiceImpl implements SuperadminService {
         userRepository.save(user);
 
         SimpleMailMessage message = new SimpleMailMessage();
-
         message.setFrom("talantbekovnazar28@gmail.com");
-        message.setTo(email);
+        message.setTo(dto.getEmail());
         message.setSubject("Your account");
-        message.setText("Your email: " + email + "\n" +
+        message.setText("Your email: " + dto.getEmail() + "\n" +
                 "Your password: " + password + "\n" +
-                "Click to the link to login into your account: " +
+                "Click the link to login into your account: " +
                 "http://localhost:8081/superadmin/account_confirm?activationtoken=" + activationtoken);
 
         mailSender.send(message);

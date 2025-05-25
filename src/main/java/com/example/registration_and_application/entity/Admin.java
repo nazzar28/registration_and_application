@@ -2,6 +2,7 @@ package com.example.registration_and_application.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -14,7 +15,9 @@ public class Admin {
     private String name;
     private String phoneNumber;
     private int age;
+    private String email;
 
     @OneToOne(mappedBy = "admin")
+    @ToString.Exclude
     private User user;
 }
