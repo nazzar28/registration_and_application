@@ -1,11 +1,14 @@
 package com.example.registration_and_application.service.serviceImpl;
 
 import com.example.registration_and_application.dto.AdminRegistrationDto;
+import com.example.registration_and_application.dto.AdminResponse;
 import com.example.registration_and_application.entity.Admin;
 import com.example.registration_and_application.entity.User;
 import com.example.registration_and_application.enums.Role;
 import com.example.registration_and_application.exception.BadCredentialsException;
 import com.example.registration_and_application.exception.CustomException;
+import com.example.registration_and_application.mapper.AdminMapper;
+import com.example.registration_and_application.repository.AdminRepository;
 import com.example.registration_and_application.repository.UserRepository;
 import com.example.registration_and_application.service.AuthService;
 import com.example.registration_and_application.service.SuperadminService;
@@ -16,6 +19,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.time.LocalDateTime;
@@ -28,6 +32,8 @@ public class SuperAdminServiceImpl implements SuperadminService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final JavaMailSender mailSender;
+    private final AdminMapper adminMapper;
+    private final AdminRepository adminRepository;
 
     public String generateActivationToken() {
         return UUID.randomUUID().toString();
@@ -89,5 +95,10 @@ public class SuperAdminServiceImpl implements SuperadminService {
 
             userRepository.save(user);
         }
+    }
+
+    @Override
+    public List<AdminResponse> getAllAdmins() {
+        return adminMapper.toDtoS(adminRepository.findAll());
     }
 }
