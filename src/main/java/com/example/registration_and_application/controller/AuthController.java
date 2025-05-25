@@ -15,15 +15,18 @@ public class AuthController {
 
     private final AuthService authService;
 
+    // Добавил @RequestBody, чтобы данные приходили из JSON тела запроса
     @PostMapping("/register")
-    public void register(UserRegisterRequest userRegisterRequest){
+    public void register(@RequestBody UserRegisterRequest userRegisterRequest) {
         authService.register(userRegisterRequest);
     }
 
+    // Добавил @RequestBody, чтобы принимать логин данные из JSON
     @PostMapping("/login")
-    public AuthLoginResponse login(AuthLoginRequest authLoginRequest){
+    public AuthLoginResponse login(@RequestBody AuthLoginRequest authLoginRequest) {
         return authService.login(authLoginRequest);
     }
+
 //
 //    @GetMapping("/registration_confirm")
 //    public String registration_confirm(@RequestParam String activationtoken) {

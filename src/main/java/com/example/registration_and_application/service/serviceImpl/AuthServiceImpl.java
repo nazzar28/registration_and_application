@@ -11,6 +11,9 @@ import com.example.registration_and_application.repository.UserRepository;
 import com.example.registration_and_application.security.UserDetailsImpl;
 import com.example.registration_and_application.service.AuthService;
 import lombok.AllArgsConstructor;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -62,9 +65,8 @@ public class AuthServiceImpl implements AuthService {
             authLoginResponse.setName(user.get().getSuperadmin().getName());
         }
 
-        Map<String, Object> extraClaims = new HashMap<>();
         UserDetails userDetails = new UserDetailsImpl(user.get());
-        String token = jwtService.generateToken(extraClaims, userDetails);
+        String token = jwtService.generateToken(userDetails);
         authLoginResponse.setToken(token);
 
         return authLoginResponse;
@@ -76,6 +78,22 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         return new UserDetailsImpl(user);
+    }
+
+    @Override
+    public User getUsernameFromToken(String token){
+
+        String[] chunks = token.substring(7).split("\\.");
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject object = null;
+        try {
+            object = (JSONObject) jsonParser.parse(decoder.decode(chunks[1]));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return userRepository.findByEmail(String.valueOf(object.get("sub"))).orElseThrow(() -> new RuntimeException("user can be null"));
     }
 
     @Override

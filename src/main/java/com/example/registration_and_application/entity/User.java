@@ -3,6 +3,7 @@ package com.example.registration_and_application.entity;
 import com.example.registration_and_application.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -21,14 +22,17 @@ public class User {
     private String activationtoken;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private Superadmin superadmin;
 
     // Остальные связи оставьте как есть
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "applicant_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Applicant applicant;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "admin_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Admin admin;
 }

@@ -2,6 +2,7 @@ package com.example.registration_and_application.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -16,5 +17,6 @@ public class Applicant {
     private int age;
 
     @OneToOne(mappedBy = "applicant")
+    @ToString.Exclude
     private User user;
 }
