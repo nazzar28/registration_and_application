@@ -1,8 +1,10 @@
 package com.example.registration_and_application.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "superadmins_table")
 public class Superadmin {
     @Id
@@ -13,6 +15,7 @@ public class Superadmin {
     private String phoneNumber;
     private int age;
 
-    @OneToOne(mappedBy = "superadmin")
+    @OneToOne
+    @JoinColumn(name = "user_id")  // внешний ключ здесь
     private User user;
 }
