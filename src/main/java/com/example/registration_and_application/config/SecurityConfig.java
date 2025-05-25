@@ -17,7 +17,9 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**", "/v3/api-docs/**",
                                 "/swagger-ui/**", "/swagger-ui.html",
                                 "/superadmin/**",
-                                "/admin/**").permitAll()
+                                "/admin/**",
+                                "/send-test-email").permitAll()
+
                 );
         return http.build();
     }
