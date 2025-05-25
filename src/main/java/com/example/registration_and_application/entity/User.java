@@ -14,18 +14,21 @@ public class User {
 
     private String email;
     private String password;
-    private String age;
+    private String age; // рекомендую заменить на Integer
 
     @Enumerated(EnumType.STRING)
     private Role role;
     private String activationtoken;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Superadmin superadmin;
+
+    // Остальные связи оставьте как есть
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "applicant_id", referencedColumnName = "id")
     private Applicant applicant;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "admin_id", referencedColumnName = "id")
     private Admin admin;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private Superadmin superadmin;
 }

@@ -1,8 +1,10 @@
 package com.example.registration_and_application.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "applicants_table")
 public class Applicant {
     @Id

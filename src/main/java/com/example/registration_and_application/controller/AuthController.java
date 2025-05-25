@@ -1,5 +1,7 @@
 package com.example.registration_and_application.controller;
 
+import com.example.registration_and_application.dto.AuthLoginRequest;
+import com.example.registration_and_application.dto.AuthLoginResponse;
 import com.example.registration_and_application.dto.UserRegisterRequest;
 import com.example.registration_and_application.service.AuthService;
 import lombok.AllArgsConstructor;
@@ -18,10 +20,10 @@ public class AuthController {
         authService.register(userRegisterRequest);
     }
 
-//    @PostMapping("/login")
-//    public AuthLoginResponse login(AuthLoginRequest authLoginRequest){
-//        return authService.login(authLoginRequest);
-//    }
+    @PostMapping("/login")
+    public AuthLoginResponse login(AuthLoginRequest authLoginRequest){
+        return authService.login(authLoginRequest);
+    }
 //
 //    @GetMapping("/registration_confirm")
 //    public String registration_confirm(@RequestParam String activationtoken) {
