@@ -27,4 +27,9 @@ public class SuperAdminController {
     public List<AdminResponse> getAllAdmins(){
         return superadminService.getAllAdmins();
     }
+
+    @DeleteMapping("/remove")
+    public void adminRemoving(@RequestBody String email){
+        superadminService.admin_removing(email);
+    }
 }

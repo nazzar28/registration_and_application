@@ -4,9 +4,9 @@ import com.example.registration_and_application.dto.AdminRegistrationDto;
 import com.example.registration_and_application.dto.AdminResponse;
 import com.example.registration_and_application.entity.Admin;
 import com.example.registration_and_application.entity.User;
-import com.example.registration_and_application.enums.Role;
 import com.example.registration_and_application.exception.BadCredentialsException;
 import com.example.registration_and_application.exception.CustomException;
+import com.example.registration_and_application.exception.NotFoundException;
 import com.example.registration_and_application.mapper.AdminMapper;
 import com.example.registration_and_application.repository.AdminRepository;
 import com.example.registration_and_application.repository.UserRepository;
@@ -75,6 +75,13 @@ public class SuperAdminServiceImpl implements SuperadminService {
                 "http://localhost:8081/superadmin/account_confirm?activationtoken=" + activationtoken);
 
         mailSender.send(message);
+    }
+
+    @Override
+    public void admin_removing(String email) {
+        if (adminRepository.findByEmail(email).isEmpty())
+            throw new NotFoundException("the admin with email: "+email+" is empty!", HttpStatus.BAD_REQUEST);
+        adminRepository.deleteByEmail(email);
     }
 
     @Override
